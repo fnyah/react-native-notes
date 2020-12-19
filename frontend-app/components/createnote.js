@@ -10,13 +10,6 @@ const CreateNote = ({ submitHandler }) => {
         setText(value)
     }
 
-    // const createNoteInDatabase = (text) => {
-    //     let data = {
-    //         content: text
-    //     }
-    //     axios.post('http://localhost:3000/sendNote', data)
-    // }
-
     return( 
         <View style={styles.container}> 
             <TextInput style={styles.textBox} 

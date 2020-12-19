@@ -3,8 +3,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var cors = require('cors')
-
+var cors = require('cors');
+require('dotenv').config();
+let mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
 var fetchFromDb = require('./routes/getnote');
@@ -12,7 +13,7 @@ var sendToDb = require('./routes/sendnote');
 var deleteFromDb = require('./routes/deletenote');
 
 var app = express();
-app.use(cors()) // Use this after the variable declaration
+app.use(cors()); // Use this after the variable declaration
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -28,6 +29,18 @@ app.use('/', indexRouter);
 app.use('/getnote', fetchFromDb);
 app.use('/sendNote', sendToDb);
 app.use('/deletenote', deleteFromDb); 
+
+
+let noteDatabase = process.env.NOTE_DATABASE; 
+let mongooseServer = process.env.MONGOOSE_SERVER;
+mongoose.connect(`mongodb://${mongooseServer}/${noteDatabase}`)
+.then(() => {
+    console.log('Database connection successful')
+})
+.catch(err => {
+    console.error('Database connection error')
+})
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
